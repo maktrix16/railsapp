@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
-  get 'users/index'
-  get 'users/chat'
-  get 'users/insight'
+  get 'users/index' => 'users#index'
+  get 'users/chat' => 'users#chat'
+  get 'users/insight' => 'users#insight'
+
   root 'users#index'
+  get '/chat' => 'users#chat'
+  get '/insight' => 'users#insight'
+
   post '/users' => 'users#create'
   post '/messages' => 'users#message'
 
