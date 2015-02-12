@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SnapTalk Chat Area</title>
+	<%= include_gon %>
+	<style type="text/css">
+			/*h1{font-size: 70px; margin-top: 500px; margin-bottom: 150px}*/
+			/*h1{font-size: 70px; margin: 500px auto 150px auto}*/
+/*			input{display: block; font-size: 50px; margin-bottom:80px; text-align: center;}
+			button{display: block; font-size:50px; margin-left:auto; margin-right: auto}
+			body{background-color:#d14e4d;}
+			.name{font-size: 50px; height:120px;}
+			.btn{font-size: 50px; height:150px;padding-top: 35px}
+http://www.pubnub.com/developers/tutorials/publish-subscribe/
+			http://ilikepixels.co.uk/drop/bubbler/
+*/	
+	.container-regular{padding: 235px 70px 70px 70px}
+
+	.top-nav{width:100%; height: 180px; background-color: #d14e4d; position:fixed; top:0px; z-index:999;}
+	.home-btn,.chat-btn,.insight-btn{background: none; color:white; display:inline-block; vertical-align: top}
+	.home-btn{font-size:80px; margin-top: 30px; margin-left: 200px}
+	.chat-btn{font-size:85px; margin-top: 25px; margin-left: 120px}
+	.insight-btn{font-size:90px; margin-top: 20px; margin-left: 120px}
+	.chat-info{font-style: italic; font-size: 25px}
+
+	.bubble1{
+		position: relative;
+		width: 700px;
+		padding: 9px;
+		background: #00A6FF;
+		-webkit-border-radius: 40px;
+		-moz-border-radius: 40px;
+		border-radius: 40px;
+		padding:30px;
+		font-size: 40px;
+		color:white;
+		margin-bottom: 50px
+	}
+
+	.bubble1:after {
+		content: '';
+		position: absolute;
+		border-style: solid;
+		border-width: 36px 56px 36px 0;
+		border-color: transparent #00A6FF;
+		display: block;
+		width: 0;
+		z-index: 1;
+		margin-top: -11px;
+		left: -50px;
+		top: 50%;
+	}
+
+
+	.bubble2
+	{
+		position: relative;
+		width: 700px;
+		padding: 9px;
+		background: #C7C8C9;
+		-webkit-border-radius: 38px;
+		-moz-border-radius: 38px;
+		border-radius: 38px;
+		margin-bottom: 50px;
+		padding:30px;
+		font-size: 40px;
+		color:white;
+		margin-left: 140px;
+	}
+
+	.bubble2:after 
+	{
+		content: '';
+		position: absolute;
+		border-style: solid;
+		border-width: 36px 0px 36px 56px;
+		border-color: transparent #C7C8C9;
+		display: block;
+		width: 0;
+		z-index: 1;
+		margin-top: -36px;
+		right: -53px;
+		top: 60%;
+	}
+
+
+	.bottom-nav{width:100%; height: 150px; background-color: white; border-top:#4f524d; position:fixed; bottom:0px; z-index:999; padding:30px;}
+
+	.msg,.send-btn{height:100px; font-size: 40px}
+	.send-btn{padding-top: 20px}
+
+	</style>
+	<script type ="text/javascript" src="http://localhost:3000/assets/date.js"></script>
+	<script type ="text/javascript" src="http://localhost:8000/socket.io/socket.io.js"></script>
+	<script type ="text/javascript">
+    $(document).ready(function (){
+			$(document).on('submit','form',function(){
+				var form=$(this);
+				$.post(
+					form.attr('action'),
+					form.serialize(),
+					function(data){
+						var msg = $("form :input[name='message[message]']").val();
+						var name = gon.name_you;
+						var date = new Date();
+						var created_at = date.format('M j, Y \\a\\t g:ia');
+						console.log(msg);
+						$('.display-chat').prepend("<div class='bubble1'><p>"+msg+"</p><p class='chat-info'>"+name+", "+created_at+"</p></div>");
+					}
+				);
+				return false;
+			});
+
+
+    	// alert(date.format('M j, Y \\a\\t h:ia'));
+			var socket = io.connect("http://localhost:8000", {force_connection: true});
+
+			$('button').click(function(){
+				var date = new Date();
+				// var name=$("input[name='name']").val();
+				var msg=$("input[name='message[message]']").val();
+				var data={
+					'name':gon.name_you, 
+					'msg':msg,
+					'created_at':date.format('M j, Y \\a\\t g:ia')
+				};
+				socket.emit("message_emit",data);
+			});
+			socket.on('message_broadcast',function(data){
+				console.log(data);
+				$('.display-chat').prepend("<div class='bubble2'><p>"+data.msg+"</p><p class='chat-info'>"+data.name+", "+data.created_at+"</p></div>");
+			});
+
+
+		}); 
+
+	</script>
+
+</head>
+<body>
+	<div class='top-nav'>
+		<a href='index.html' class="btn home-btn" aria-label="Left Align">
+		  <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+		</a>
+		<a href='chat.html' class="btn chat-btn" aria-label="Left Align">
+		  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+		</a>
+		<a href='insignt.html' class="btn insight-btn" aria-label="Left Align">
+		  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+		</a>
+	</div>
+
+
+	<div class='container-regular'>
+
+<!-- 
+		<h1>The button has been pushed <span id="count">0</span> times(s)</h1>
+		<p>Push the button to update the count!</p>
+		<button id='epic-btn'>Push the epic button</button>
+		<button id='reset-btn'>Reset count</button>
+ -->
+
+		<div class='display-chat'></div>
+		<% @messages.each do |msg|%>
+
+			<% if msg.from_id == session[:id_you] %>
+				<div class='bubble1'>
+					<p><%=msg.message%></p>
+					<p class='chat-info'><span><%=msg.from_user%>, <%=msg.created_at.strftime "%b %e, %Y at %l:%M%p"%></p>
+				</div>			
+			<% else %>
+				<div class='bubble2'>
+					<p><%=msg.message%></p>
+					<p class='chat-info'><span><%=msg.from_user%>, <%=msg.created_at.strftime "%b %e, %Y at %l:%M%p"%></p>
+				</div>			
+			<% end %>
+		<% end %>
+	</div>
+
+	<div class='bottom-nav'>
+		<form role='form' action='/messages/' method='post'>
+			<div class='row'>
+				<input name="authenticity_token" value="<%=form_authenticity_token%>" type='hidden'>
+				<div class='col-xs-9'><input class='msg form-control' type='text' name='message[message]' placeholder='Enter your message here'></div>
+				<!-- <div class='col-xs-3'><a class='btn btn-success form-control send-btn' href='1_chat.html'>Enter</a></div> -->
+				<div class='col-xs-3'><button class='btn btn-success form-control send-btn'>Enter</button></div>
+			</div>
+	</div>
+
+</body>
+</html>
