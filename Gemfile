@@ -5,6 +5,11 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.8'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
+# gem 'pg'
+
+# gem install pg -- --with-pg-config=/Applications/Postgres.app/Contents/Versions/9.4/bin/pg_config
+
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -44,3 +49,5 @@ gem 'rails-footnotes', '>= 4.0.0','<5'
 gem 'twitter-bootstrap-rails'
 
 gem 'gon'
+
+gem 'passenger'
