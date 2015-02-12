@@ -52,3 +52,9 @@ gem 'hirb'
 gem 'gon'
 
 gem 'passenger'
+
+
+group :production, :staging do
+  gem 'rack-cors', :require => 'rack/cors'
+end
+

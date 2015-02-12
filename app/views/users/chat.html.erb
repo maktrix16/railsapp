@@ -1,8 +1,8 @@
 	<title>SnapTalk Chat Area</title>
 	<%= include_gon %>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+	<script src='/assets/jquery-1.11.1.min.js'></script>
+	<link rel='stylesheet' href='/assets/bootstrap.min.css'>
+	<script src="/assets/bootstrap.min.js"></script>
 
 	<style type="text/css">
 			/*h1{font-size: 70px; margin-top: 500px; margin-bottom: 150px}*/
@@ -91,8 +91,8 @@ http://www.pubnub.com/developers/tutorials/publish-subscribe/
 	/*.send-btn{padding-top: 20px}*/
 
 	</style>
-	<script type ="text/javascript" src="http://localhost:3000/assets/date.js"></script>
-	<script type ="text/javascript" src="http://localhost:8000/socket.io/socket.io.js"></script>
+	<script type ="text/javascript" src="http://snaptalk.click/assets/date.js"></script>
+	<script type ="text/javascript" src="http://snaptalk.click:8001/socket.io/socket.io.js"></script>
 	<script type ="text/javascript">
     $(document).ready(function (){
 			$(document).on('submit','form',function(){
