@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
 	<title>SnapTalk Chat Area</title>
 	<%= include_gon %>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
 	<style type="text/css">
 			/*h1{font-size: 70px; margin-top: 500px; margin-bottom: 150px}*/
 			/*h1{font-size: 70px; margin: 500px auto 150px auto}*/
@@ -88,7 +88,7 @@ http://www.pubnub.com/developers/tutorials/publish-subscribe/
 	.bottom-nav{width:100%; height: 150px; background-color: white; border-top:#4f524d; position:fixed; bottom:0px; z-index:999; padding:30px;}
 
 	.msg,.send-btn{height:100px; font-size: 40px}
-	.send-btn{padding-top: 20px}
+	/*.send-btn{padding-top: 20px}*/
 
 	</style>
 	<script type ="text/javascript" src="http://localhost:3000/assets/date.js"></script>
@@ -97,16 +97,16 @@ http://www.pubnub.com/developers/tutorials/publish-subscribe/
     $(document).ready(function (){
 			$(document).on('submit','form',function(){
 				var form=$(this);
+				var msg = $("form :input[name='message[message]']").val();
+				var name = gon.name_you;
+				var date = new Date();
+				var created_at = date.format('M j, Y \\a\\t g:ia');
+				$('.display-chat').prepend("<div class='bubble1'><p>"+msg+"</p><p class='chat-info'>"+name+", "+created_at+"</p></div>");
 				$.post(
 					form.attr('action'),
 					form.serialize(),
 					function(data){
-						var msg = $("form :input[name='message[message]']").val();
-						var name = gon.name_you;
-						var date = new Date();
-						var created_at = date.format('M j, Y \\a\\t g:ia');
-						console.log(msg);
-						$('.display-chat').prepend("<div class='bubble1'><p>"+msg+"</p><p class='chat-info'>"+name+", "+created_at+"</p></div>");
+						// console.log(data);
 					}
 				);
 				return false;
@@ -140,13 +140,13 @@ http://www.pubnub.com/developers/tutorials/publish-subscribe/
 </head>
 <body>
 	<div class='top-nav'>
-		<a href='index.html' class="btn home-btn" aria-label="Left Align">
+		<a href='/' class="btn home-btn" aria-label="Left Align">
 		  <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 		</a>
-		<a href='chat.html' class="btn chat-btn" aria-label="Left Align">
+		<a href='#' class="btn chat-btn" aria-label="Left Align">
 		  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
 		</a>
-		<a href='insignt.html' class="btn insight-btn" aria-label="Left Align">
+		<a href='/insight' class="btn insight-btn" aria-label="Left Align">
 		  <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 		</a>
 	</div>
@@ -167,12 +167,12 @@ http://www.pubnub.com/developers/tutorials/publish-subscribe/
 			<% if msg.from_id == session[:id_you] %>
 				<div class='bubble1'>
 					<p><%=msg.message%></p>
-					<p class='chat-info'><span><%=msg.from_user%>, <%=msg.created_at.strftime "%b %e, %Y at %l:%M%p"%></p>
+					<p class='chat-info'><span><%=msg.from_user%>, <%=msg.created_at.strftime "%b %e, %Y at %l:%M%P"%></p>
 				</div>			
 			<% else %>
 				<div class='bubble2'>
 					<p><%=msg.message%></p>
-					<p class='chat-info'><span><%=msg.from_user%>, <%=msg.created_at.strftime "%b %e, %Y at %l:%M%p"%></p>
+					<p class='chat-info'><span><%=msg.from_user%>, <%=msg.created_at.strftime "%b %e, %Y at %l:%M%P"%></p>
 				</div>			
 			<% end %>
 		<% end %>
@@ -184,9 +184,6 @@ http://www.pubnub.com/developers/tutorials/publish-subscribe/
 				<input name="authenticity_token" value="<%=form_authenticity_token%>" type='hidden'>
 				<div class='col-xs-9'><input class='msg form-control' type='text' name='message[message]' placeholder='Enter your message here'></div>
 				<!-- <div class='col-xs-3'><a class='btn btn-success form-control send-btn' href='1_chat.html'>Enter</a></div> -->
-				<div class='col-xs-3'><button class='btn btn-success form-control send-btn'>Enter</button></div>
+				<div class='col-xs-3'><button type='submit' class='btn btn-success form-control send-btn'>Enter</button></div>
 			</div>
 	</div>
-
-</body>
-</html>

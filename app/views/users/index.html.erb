@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
 	<title>SnapTalk Home</title>
-	<!-- <link rel='stylesheet' href='assets/bootstrap/css/bootstrap.min.css'> -->
-	<!-- // <script src='assets/jquery/jquery-1.11.1.min.js'></script>	 -->
-	<!-- // <script src="assets/bootstrap/js/bootstrap.min.js"></script> -->
+	
+<!-- 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+ -->
+	<script src='http://localhost:3000/assets/jquery-1.11.1.min.js'></script>	
+	<link rel='stylesheet' href='http://localhost:3000/assets/bootstrap.min.css'>
+	<script src="http://localhost:3000/assets/bootstrap.min.js"></script>
 	<!-- https://github.com/seyhunak/twitter-bootstrap-rails -->
 	<style type="text/css">
 			h1{font-size: 70px; margin-top: 500px; margin-bottom: 150px}
@@ -14,7 +15,7 @@
 			button{display: block; font-size:50px; margin-left:auto; margin-right: auto}
 			body{background-color:#d14e4d;}
 			.name{font-size: 50px; height:120px;}
-			.btn{font-size: 50px; height:150px;padding-top: 35px}
+			.btn{font-size: 50px; height:150px;}
 	</style>
 </head>
 <body>
@@ -22,17 +23,15 @@
 		<div class='row'>
 			<div class="col-md-12"><h1>Welcome to SnapTalk</h1></div>
 		</div>
-		<form role='form' action='/users/' method='post'>
+		<form role='form' action='/users' method='post'>
 			<input name="authenticity_token" value="<%=form_authenticity_token%>" type='hidden'>
 			<div class="form-group">
 				<div class='row'>
 					<div class='col-md-12'><input class='form-control name' type='text' name='user[name]' placeholder='Enter your name'></div>
-			</div>			
+			</div>
 			<div class="row">
 				<div class='col-md-12'><button type='submit' class='btn btn-success form-control'>Enter</button></div>
 				<!-- <div class='col-md-12'><a class='btn btn-success form-control' href='/users/chat'>Enter</a></div> -->
 			</div>
 		</form>
 	</div>
-</body>
-</html>
